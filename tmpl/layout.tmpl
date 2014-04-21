@@ -51,7 +51,12 @@
 <div id="wrap" class="clearfix">
     <?js= this.partial('navigation.tmpl', this) ?>
     <div class="main">
-        <h1 class="page-title" data-filename="<?js= filename ?>"><?js= title ?></h1>
+        <?js if (typeof filename === 'undefined') { ?>
+            <h1 class="page-title"><?js= title ?></h1>
+        <?js } else { ?>
+            <h1 class="page-title" data-filename="<?js= filename ?>"><?js= title ?></h1>
+        <?js } ?>
+
         <?js= content ?>
 
         <?js if (env.conf.templates.disqus) { ?>
