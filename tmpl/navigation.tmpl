@@ -18,20 +18,74 @@ var self = this;
                 <span class="static">static</span>
                 <?js } ?>
             </span>
-            <ul class="members itemMembers">
+
             <?js
-            if (item.members.length) {
-            ?>
-            <span class="subtitle">Members</span>
+            var staticMembers = item.members.filter(function(member) {
+                return member.scope === 'static';
+            });
+            var staticMethods = item.methods.filter(function(member) {
+                return member.scope === 'static';
+            });
+            if (staticMembers.length || staticMethods.length) { ?>
+                <?js if (staticMembers.length) { ?>
+                    <ul class="members itemMembers">
+                        <span class="subtitle">Static members</span>
+                        <?js staticMembers.forEach(function (v) { ?>
+                        <li data-name="<?js= v.longname ?>"><?js= self.linkto(v.longname, v.name) ?></li>
+                        <?js }); ?>
+                    </ul>
+                <?js } ?>
+
+                <?js if (staticMethods.length) { ?>
+                    <ul class="methods itemMembers">
+                        <span class="subtitle">Static methods</span>
+                        <?js staticMethods.forEach(function (v) { ?>
+                            <li data-name="<?js= v.longname ?>"><?js= self.linkto(v.longname, v.name) ?></li>
+                        <?js }); ?>
+                    </ul>
+                <?js } ?>
+            <?js } ?>
+
             <?js
-                item.members.forEach(function (v) {
-            ?>
-                <li data-name="<?js= v.longname ?>"><?js= self.linkto(v.longname, v.name) ?></li>
-            <?js
-                });
-            }
-            ?>
-            </ul>
+            var instanceMembers = item.members.filter(function(member) {
+                return member.scope === 'instance';
+            });
+            var instanceMethods = item.methods.filter(function(member) {
+                return member.scope === 'instance';
+            });
+            if (instanceMembers.length || instanceMethods.length) { ?>
+                <ul class="members itemMembers">
+                <?js
+                if (instanceMembers.length) {
+                ?>
+                <span class="subtitle">Instance members</span>
+                <?js
+                    instanceMembers.forEach(function (v) {
+                ?>
+                    <li data-name="<?js= v.longname ?>"><?js= self.linkto(v.longname, v.name) ?></li>
+                <?js
+                    });
+                }
+                ?>
+                </ul>
+
+                <ul class="methods itemMembers">
+                <?js
+                if (instanceMethods.length) {
+                ?>
+                <span class="subtitle">Instance methods</span>
+                <?js
+
+                    instanceMethods.forEach(function (v) {
+                ?>
+                    <li data-name="<?js= v.longname ?>"><?js= self.linkto(v.longname, v.name) ?></li>
+                <?js
+                    });
+                }
+                ?>
+                </ul>
+            <?js } ?>
+
             <ul class="typedefs itemMembers">
             <?js
             if (item.typedefs.length) {
@@ -46,21 +100,7 @@ var self = this;
             }
             ?>
             </ul>
-            <ul class="methods itemMembers">
-            <?js
-            if (item.methods.length) {
-            ?>
-            <span class="subtitle">Methods</span>
-            <?js
 
-                item.methods.forEach(function (v) {
-            ?>
-                <li data-name="<?js= v.longname ?>"><?js= self.linkto(v.longname, v.name) ?></li>
-            <?js
-                });
-            }
-            ?>
-            </ul>
             <ul class="events itemMembers">
             <?js
             if (item.events.length) {
